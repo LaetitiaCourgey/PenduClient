@@ -28,7 +28,7 @@ public class Panel extends JPanel implements ActionListener {
 	public JLabel guessedLetters = new JLabel("<html><font size = 5></font></html>");
 	public JButton connect = new JButton("Connect");
 	public JButton disconnect = new JButton("Disconnect");
-	public JButton newGame = new JButton("New Game");
+	// public JButton newGame = new JButton("New Game");
 	public JButton guess = new JButton("Guess");
 
 	Panel() {
@@ -72,20 +72,20 @@ public class Panel extends JPanel implements ActionListener {
 		p = new JPanel();
 		p.add(connect);
 		p.add(disconnect);
-		p.add(newGame);
+		// p.add(newGame);
 		p.setBackground(Color.darkGray);
 		this.add(p);
 
 		// Add listeners
 		connect.addActionListener(this);
 		disconnect.addActionListener(this);
-		newGame.addActionListener(this);
+		// newGame.addActionListener(this);
 		guess.addActionListener(this);
 
 		// Hide/Disable input
 		disconnect.setEnabled(false);
 		disconnect.setVisible(false);
-		newGame.setEnabled(false);
+		// newGame.setEnabled(false);
 		guess.setEnabled(false);
 		input.setEnabled(false);
 
@@ -137,8 +137,9 @@ public class Panel extends JPanel implements ActionListener {
 						JOptionPane.ERROR_MESSAGE);
 			}
 			enablePlaying(false); // When the client is not connected to a server, disable all input
-		} else if (e.getSource() == newGame) // Client wants to start a new game
-			connectionHandler.sendMessage(new Message(Message.NEW_GAME));
+		}
+//		else if (e.getSource() == newGame) // Client wants to start a new game
+//			connectionHandler.sendMessage(new Message(Message.NEW_GAME));
 		else if (e.getSource() == guess) // Client takes a guess
 		{
 			if (!input.getText().isEmpty()) {
@@ -158,7 +159,7 @@ public class Panel extends JPanel implements ActionListener {
 		connect.setEnabled(!enable);
 		disconnect.setVisible(enable);
 		disconnect.setEnabled(enable);
-		newGame.setEnabled(enable);
+		// newGame.setEnabled(enable);
 		guess.setEnabled(enable);
 		input.setEnabled(enable);
 	}
