@@ -45,7 +45,7 @@ public class ConnectionHandler implements Runnable {
 		// client wants to start a new game
 		sendMessage(new Message(Message.NEW_GAME));
 		// panel.updateInfo(new Message(0, '1'));
-		sendMessage(new Message(0, "1"));
+		// sendMessage(new Message(0, "1"));
 
 		System.out.println("before while in connectionHandler run");
 		while (!socket.isClosed()) // Run while a connection is maintained
@@ -58,17 +58,17 @@ public class ConnectionHandler implements Runnable {
 					{
 						panel.winOrLose(true, message);
 						sendMessage(new Message(Message.NEW_GAME)); // Start a new game
-						sendMessage(new Message(0, "1"));
+						// sendMessage(new Message(0, "1"));
 					} else if (message.flag == Message.LOSE) // The client lost
 					{
 						panel.winOrLose(false, message);
 						sendMessage(new Message(Message.NEW_GAME)); // Start a new game
-						sendMessage(new Message(0, "1"));
+						// sendMessage(new Message(0, "1"));
 					}
 					// The client guessed right/wrong or requested to start a new game
-					// else if(message.flag == Message.RIGHT_GUESS || message.flag ==
-					// Message.WRONG_GUESS || message.flag == Message.NEW_GAME)
-					else if (message.flag == Message.RIGHT_GUESS || message.flag == Message.WRONG_GUESS)
+					else if (message.flag == Message.RIGHT_GUESS || message.flag == Message.WRONG_GUESS
+							|| message.flag == Message.NEW_GAME)
+//					else if (message.flag == Message.RIGHT_GUESS || message.flag == Message.WRONG_GUESS)
 						panel.updateInfo(message);
 					else if (message.flag == Message.CLOSE_CONNECTION) // The server has terminated the connection
 						disconnect();
