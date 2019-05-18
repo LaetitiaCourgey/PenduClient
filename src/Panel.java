@@ -30,6 +30,7 @@ public class Panel extends JPanel implements ActionListener {
 	public JButton disconnect = new JButton("Disconnect");
 	// public JButton newGame = new JButton("New Game");
 	public JButton guess = new JButton("Guess");
+	public JLabel player = new JLabel();
 
 	Panel() {
 		this.setBackground(Color.darkGray);
@@ -37,7 +38,8 @@ public class Panel extends JPanel implements ActionListener {
 
 		// Show info
 		JPanel p = new JPanel();
-		p.setLayout(new FlowLayout(0, 35, 10));
+		p.setLayout(new FlowLayout(0, 50, 15));
+		p.add(player);
 		p.add(allowedAttempts);
 		p.add(score);
 		this.add(p);
@@ -100,10 +102,10 @@ public class Panel extends JPanel implements ActionListener {
 		allowedAttempts.setText("Attempts left: 0");
 		if (win) {
 			guessedLetters.setText("<html><font size = 5>" + msg.word + "</font></html>");
-			JOptionPane.showMessageDialog(this, "Congratulations! You win!");
+			JOptionPane.showMessageDialog(this, "Félicitations! " + msg.name + " a gagné!");
 		} else {
 			guessedLetters.setText("");
-			JOptionPane.showMessageDialog(this, "Game Over! You lose!");
+			JOptionPane.showMessageDialog(this, "Game Over! " + msg.name + " a perdu!");
 		}
 		input.setText("");
 	}
@@ -111,6 +113,10 @@ public class Panel extends JPanel implements ActionListener {
 	public void updateInfo(Message msg) {
 		allowedAttempts.setText("Attempts left: " + msg.allowedAttempts);
 		guessedLetters.setText("<html><font size = 5>" + msg.guessedLetters + "</font></html>");
+		if (msg.flag == Message.NEW_GAME) {
+			this.player.setText(msg.name);
+
+		}
 	}
 
 	@Override

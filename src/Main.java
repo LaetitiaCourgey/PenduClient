@@ -14,11 +14,11 @@ public class Main extends JFrame {
 	Main() {
 		System.out.println("MainClientConstructeur");
 		this.add(panel);
-		this.setTitle("Client");
+		this.setTitle("Client ");
 		this.setVisible(true);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		this.setSize(new Dimension(250, 250));
+		this.setSize(new Dimension(500, 500));
 		this.addWindowListener(new Adapter());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
