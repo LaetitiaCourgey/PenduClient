@@ -102,10 +102,12 @@ public class Panel extends JPanel implements ActionListener {
 		allowedAttempts.setText("Attempts left: 0");
 		if (win) {
 			guessedLetters.setText("<html><font size = 5>" + msg.word + "</font></html>");
-			JOptionPane.showMessageDialog(this, "Félicitations! " + msg.name + " a gagné!");
+			JOptionPane.showMessageDialog(this,
+					"Félicitations! " + msg.name + " a gagné! \nScores: \n" + msg.resultats);
 		} else {
 			guessedLetters.setText("");
-			JOptionPane.showMessageDialog(this, "Game Over! " + msg.name + " a perdu!");
+			JOptionPane.showMessageDialog(this,
+					"Game Over! " + msg.name + " a perdu! \nScores: \n" + msg.resultats);
 		}
 		input.setText("");
 	}
