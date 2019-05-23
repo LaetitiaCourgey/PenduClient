@@ -61,6 +61,7 @@ public class ConnectionHandler implements Runnable {
 						// sendMessage(new Message(0, "1"));
 					} else if (message.flag == Message.LOSE) // The client lost
 					{
+						panel.changeImage(message);
 						panel.winOrLose(false, message);
 						sendMessage(new Message(Message.NEW_GAME)); // Start a new game
 						// sendMessage(new Message(0, "1"));
@@ -70,6 +71,9 @@ public class ConnectionHandler implements Runnable {
 							|| message.flag == Message.NEW_GAME)
 //					else if (message.flag == Message.RIGHT_GUESS || message.flag == Message.WRONG_GUESS)
 						panel.updateInfo(message);
+					if (message.flag == Message.WRONG_GUESS) {
+						panel.changeImage(message);
+					}
 					else if (message.flag == Message.CLOSE_CONNECTION) // The server has terminated the connection
 						disconnect();
 				} else

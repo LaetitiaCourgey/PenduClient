@@ -1,14 +1,16 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 
 /***************************************************************************************
  * Written by: Simon Cicek * Last changed: 2012-04-13 *
@@ -31,10 +33,26 @@ public class Panel extends JPanel implements ActionListener {
 	// public JButton newGame = new JButton("New Game");
 	public JButton guess = new JButton("Guess");
 	public JLabel player = new JLabel();
+	private ImageLabel imageLabel;
+	private JPanel rightContent = new JPanel();
+
+	private int evolution_pendu = 0;
+
+	private Dimension dimension = new Dimension();
 
 	Panel() {
-		this.setBackground(Color.darkGray);
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		// this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.imageLabel = new ImageLabel();
+		this.imageLabel.setPreferredSize(new Dimension(300, 300));
+		this.imageLabel.setVerticalAlignment(JLabel.CENTER);
+		this.imageLabel.setImagePath("images/accueil.jpg");
+
+		this.dimension = new Dimension(400, 530);
+
+
+		JPanel leftContent = new JPanel();
+		leftContent.setPreferredSize(this.dimension);
+		// leftContent.setBackground(Color.darkGray);
 
 		// Show info
 		JPanel p = new JPanel();
@@ -42,24 +60,28 @@ public class Panel extends JPanel implements ActionListener {
 		p.add(player);
 		p.add(allowedAttempts);
 		p.add(score);
-		this.add(p);
+		p.setPreferredSize(new Dimension(400, 50));
+		leftContent.add(p, BorderLayout.CENTER);
 
 		// Show output
 		p = new JPanel();
 		p.add(guessedLetters);
-		this.add(p);
+		p.setPreferredSize(new Dimension(400, 50));
+		leftContent.add(p, BorderLayout.CENTER);
 
 		// Show input
 		p = new JPanel();
 		p.add(input);
 		p.add(guess);
-		this.add(p);
+		p.setPreferredSize(new Dimension(400, 50));
+		leftContent.add(p, BorderLayout.CENTER);
 
 		// Show "Connected to:"
 		p = new JPanel();
 		p.add(new JLabel("<html><font color = white size = 5>Connected to:</font></html>"));
 		p.setBackground(Color.darkGray);
-		this.add(p);
+		p.setPreferredSize(new Dimension(400, 100));
+		leftContent.add(p, BorderLayout.CENTER);
 
 		// Show connection info
 		p = new JPanel();
@@ -68,7 +90,8 @@ public class Panel extends JPanel implements ActionListener {
 		p.add(portLabel);
 		p.add(port);
 		p.setBackground(Color.darkGray);
-		this.add(p);
+		p.setPreferredSize(new Dimension(400, 100));
+		leftContent.add(p, BorderLayout.CENTER);
 
 		// Show new/end game buttons
 		p = new JPanel();
@@ -76,7 +99,14 @@ public class Panel extends JPanel implements ActionListener {
 		p.add(disconnect);
 		// p.add(newGame);
 		p.setBackground(Color.darkGray);
-		this.add(p);
+		leftContent.add(p);
+		this.add(leftContent);
+
+		rightContent.setPreferredSize(this.dimension);
+		rightContent.add(this.imageLabel, BorderLayout.CENTER);
+		rightContent.setBackground(Color.white);
+		this.add(rightContent);
+
 
 		// Add listeners
 		connect.addActionListener(this);
@@ -93,7 +123,7 @@ public class Panel extends JPanel implements ActionListener {
 
 		// Set default values
 		ip.setText("127.0.0.1");
-		port.setText("80");
+		port.setText("81");
 	}
 
 	// Notifies the user that it has won/lost
@@ -117,7 +147,23 @@ public class Panel extends JPanel implements ActionListener {
 		guessedLetters.setText("<html><font size = 5>" + msg.guessedLetters + "</font></html>");
 		if (msg.flag == Message.NEW_GAME) {
 			this.player.setText(msg.name);
+			if (msg.allowedAttempts != 8) {
+				this.imageLabel.setImagePath("images/pendu" + (7 - msg.allowedAttempts) + ".jpg");
+				evolution_pendu = 8 - msg.allowedAttempts;
+			}
+			else {
+				this.imageLabel.setImagePath("images/accueil.jpg");
+			}
+		}
+	}
 
+	public void changeImage(Message msg) {
+		this.imageLabel.setImagePath("images/pendu" + evolution_pendu + ".jpg");
+		System.out.println("hhh");
+		evolution_pendu++;
+		if (evolution_pendu == 8) {
+			evolution_pendu = 0;
+			// this.imageLabel.removeImagePath();
 		}
 	}
 
@@ -125,7 +171,7 @@ public class Panel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == connect) // Client wants to connect to a server
 		{
-			int p = 80; // Default port
+			int p = 81; // Default port
 			try {
 				p = Integer.parseInt(port.getText());
 			} // Get an int from the port textfield
@@ -171,4 +217,6 @@ public class Panel extends JPanel implements ActionListener {
 		guess.setEnabled(enable);
 		input.setEnabled(enable);
 	}
+
+
 }

@@ -18,7 +18,7 @@ public class Main extends JFrame {
 		this.setVisible(true);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		this.setSize(new Dimension(500, 500));
+		this.setSize(new Dimension(900, 600));
 		this.addWindowListener(new Adapter());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
