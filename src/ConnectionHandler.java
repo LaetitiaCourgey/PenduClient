@@ -4,10 +4,13 @@ import java.net.Socket;
 
 import javax.swing.JOptionPane;
 
-/***************************************************************************************
- * Written by: Simon Cicek * Last changed: 2012-04-13 *
- ***************************************************************************************/
-
+/**
+ * @author Tuan Nam Davaux, Laetitia Courgey and Samuel Cohen
+ * @since 2019-05-26
+ *        <p>
+ *        <b>Handles all communication with the Server</b>
+ *        </p>
+ */
 public class ConnectionHandler implements Runnable {
 	int score = 0, allowedAttempts, port;
 	String word, guessedLetters, ip;
@@ -18,15 +21,16 @@ public class ConnectionHandler implements Runnable {
 	ObjectOutputStream out;
 
 	ConnectionHandler(String ip, int port, Panel p) {
-		System.out.println("ConnectionHandler");
 		this.ip = ip;
 		this.port = port;
 		panel = p;
 	}
 
-	// Sends a message to the server and flushes the stream
+	/**
+	 * Sends a message to the server and flushes the stream
+	 */
 	public void sendMessage(Message msg) {
-		System.out.println("sendMessage");
+
 		try {
 			out.writeObject(msg);
 			out.flush();
@@ -38,16 +42,12 @@ public class ConnectionHandler implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("run");
 		if (!connect()) // If a connection was not made then it's pointless to go on
 			return;
-		// sendMessage(new Message(Message.JOIN_GAME)); // Notify the server that the
+		// Notify the server that the
 		// client wants to start a new game
 		sendMessage(new Message(Message.NEW_GAME));
-		// panel.updateInfo(new Message(0, '1'));
-		// sendMessage(new Message(0, "1"));
 
-		System.out.println("before while in connectionHandler run");
 		while (!socket.isClosed()) // Run while a connection is maintained
 		{
 			try {
@@ -58,23 +58,19 @@ public class ConnectionHandler implements Runnable {
 					{
 						panel.winOrLose(true, message);
 						sendMessage(new Message(Message.NEW_GAME)); // Start a new game
-						// sendMessage(new Message(0, "1"));
 					} else if (message.flag == Message.LOSE) // The client lost
 					{
 						panel.changeImage(message);
 						panel.winOrLose(false, message);
 						sendMessage(new Message(Message.NEW_GAME)); // Start a new game
-						// sendMessage(new Message(0, "1"));
 					}
 					// The client guessed right/wrong or requested to start a new game
 					else if (message.flag == Message.RIGHT_GUESS || message.flag == Message.WRONG_GUESS
 							|| message.flag == Message.NEW_GAME)
-//					else if (message.flag == Message.RIGHT_GUESS || message.flag == Message.WRONG_GUESS)
 						panel.updateInfo(message);
 					if (message.flag == Message.WRONG_GUESS) {
 						panel.changeImage(message);
-					}
-					else if (message.flag == Message.CLOSE_CONNECTION) // The server has terminated the connection
+					} else if (message.flag == Message.CLOSE_CONNECTION) // The server has terminated the connection
 						disconnect();
 				} else
 					Thread.yield(); // The thread gives up its timeslice if the client does not send anything
@@ -83,9 +79,11 @@ public class ConnectionHandler implements Runnable {
 		}
 	}
 
-	// Connects to a server
+	/**
+	 * Connects to a server
+	 */
 	public boolean connect() {
-		System.out.println("connect");
+
 		try {
 			socket = new Socket(ip, port);
 			out = new ObjectOutputStream(socket.getOutputStream());
@@ -100,9 +98,11 @@ public class ConnectionHandler implements Runnable {
 		}
 	}
 
-	// Disconnects from the connected server
+	/**
+	 * Disconnects from the connected server
+	 */
 	public boolean disconnect() {
-		System.out.println("connect");
+
 		try {
 			sendMessage(new Message(Message.CLOSE_CONNECTION));
 			out.close();

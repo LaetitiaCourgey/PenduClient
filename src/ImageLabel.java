@@ -7,6 +7,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
+/**
+ * @author Tuan Nam Davaux, Laetitia Courgey and Samuel Cohen
+ * @since 2019-05-26
+ *        <p>
+ *        <b>Handles the Pendu pictures</b>
+ *        </p>
+ */
 public class ImageLabel extends JLabel {
 
 	private String imagePath = "images/pendu0.jpg";

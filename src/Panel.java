@@ -11,26 +11,32 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
-/***************************************************************************************
- * Written by: Simon Cicek * Last changed: 2012-04-13 *
- ***************************************************************************************/
-
+/**
+ * @author Tuan Nam Davaux, Laetitia Courgey and Samuel Cohen
+ * @since 2019-05-26
+ *        <p>
+ *        <b>Pendu Game Panel with all features</b>
+ *        </p>
+ */
 public class Panel extends JPanel implements ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ConnectionHandler connectionHandler;
 
 	// The components of the panel
 	public JTextField input = new JTextField(14);
 	public JTextField ip = new JTextField(9);
 	public JTextField port = new JTextField(4);
-	public JLabel ipLabel = new JLabel("<html><font color = white size = 3>IP: </font></html>");
-	public JLabel portLabel = new JLabel("<html><font color = white size = 3>Port: </font></html>");
+	public JLabel ipLabel = new JLabel("<html><font color = black size = 3>IP: </font></html>");
+	public JLabel portLabel = new JLabel("<html><font color = black size = 3>Port: </font></html>");
 	public JLabel score = new JLabel("Score: 0");
 	public JLabel allowedAttempts = new JLabel("Attempts left: 0");
 	public JLabel guessedLetters = new JLabel("<html><font size = 5></font></html>");
 	public JButton connect = new JButton("Connect");
 	public JButton disconnect = new JButton("Disconnect");
-	// public JButton newGame = new JButton("New Game");
 	public JButton guess = new JButton("Guess");
 	public JLabel player = new JLabel();
 	private ImageLabel imageLabel;
@@ -41,18 +47,16 @@ public class Panel extends JPanel implements ActionListener {
 	private Dimension dimension = new Dimension();
 
 	Panel() {
-		// this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setBackground(Color.darkGray);
 		this.imageLabel = new ImageLabel();
-		this.imageLabel.setPreferredSize(new Dimension(300, 300));
+		this.imageLabel.setPreferredSize(new Dimension(500, 400));
 		this.imageLabel.setVerticalAlignment(JLabel.CENTER);
 		this.imageLabel.setImagePath("images/accueil.jpg");
 
 		this.dimension = new Dimension(400, 530);
 
-
 		JPanel leftContent = new JPanel();
 		leftContent.setPreferredSize(this.dimension);
-		// leftContent.setBackground(Color.darkGray);
 
 		// Show info
 		JPanel p = new JPanel();
@@ -82,6 +86,7 @@ public class Panel extends JPanel implements ActionListener {
 		p.setBackground(Color.darkGray);
 		p.setPreferredSize(new Dimension(400, 100));
 		leftContent.add(p, BorderLayout.CENTER);
+		leftContent.setBackground(Color.darkGray);
 
 		// Show connection info
 		p = new JPanel();
@@ -89,7 +94,6 @@ public class Panel extends JPanel implements ActionListener {
 		p.add(ip);
 		p.add(portLabel);
 		p.add(port);
-		p.setBackground(Color.darkGray);
 		p.setPreferredSize(new Dimension(400, 100));
 		leftContent.add(p, BorderLayout.CENTER);
 
@@ -97,27 +101,23 @@ public class Panel extends JPanel implements ActionListener {
 		p = new JPanel();
 		p.add(connect);
 		p.add(disconnect);
-		// p.add(newGame);
 		p.setBackground(Color.darkGray);
 		leftContent.add(p);
 		this.add(leftContent);
 
 		rightContent.setPreferredSize(this.dimension);
 		rightContent.add(this.imageLabel, BorderLayout.CENTER);
-		rightContent.setBackground(Color.white);
+		rightContent.setBackground(Color.darkGray);
 		this.add(rightContent);
-
 
 		// Add listeners
 		connect.addActionListener(this);
 		disconnect.addActionListener(this);
-		// newGame.addActionListener(this);
 		guess.addActionListener(this);
 
 		// Hide/Disable input
 		disconnect.setEnabled(false);
 		disconnect.setVisible(false);
-		// newGame.setEnabled(false);
 		guess.setEnabled(false);
 		input.setEnabled(false);
 
@@ -126,18 +126,20 @@ public class Panel extends JPanel implements ActionListener {
 		port.setText("81");
 	}
 
-	// Notifies the user that it has won/lost
+	/**
+	 * Notifies the user that it has won/lost
+	 */
 	public void winOrLose(boolean win, Message msg) {
+
 		score.setText("Score: " + msg.score);
 		allowedAttempts.setText("Attempts left: 0");
 		if (win) {
 			guessedLetters.setText("<html><font size = 5>" + msg.word + "</font></html>");
 			JOptionPane.showMessageDialog(this,
-					"Félicitations! " + msg.name + " a gagné! \nScores: \n" + msg.resultats);
+					"Congratulations! " + msg.name + " has won! \nScores: \n" + msg.resultats);
 		} else {
 			guessedLetters.setText("");
-			JOptionPane.showMessageDialog(this,
-					"Game Over! " + msg.name + " a perdu! \nScores: \n" + msg.resultats);
+			JOptionPane.showMessageDialog(this, "Game Over! " + msg.name + " has lost! \nScores: \n" + msg.resultats);
 		}
 		input.setText("");
 	}
@@ -150,8 +152,7 @@ public class Panel extends JPanel implements ActionListener {
 			if (msg.allowedAttempts != 8) {
 				this.imageLabel.setImagePath("images/pendu" + (7 - msg.allowedAttempts) + ".jpg");
 				evolution_pendu = 8 - msg.allowedAttempts;
-			}
-			else {
+			} else {
 				this.imageLabel.setImagePath("images/accueil.jpg");
 			}
 		}
@@ -159,11 +160,9 @@ public class Panel extends JPanel implements ActionListener {
 
 	public void changeImage(Message msg) {
 		this.imageLabel.setImagePath("images/pendu" + evolution_pendu + ".jpg");
-		System.out.println("hhh");
 		evolution_pendu++;
 		if (evolution_pendu == 8) {
 			evolution_pendu = 0;
-			// this.imageLabel.removeImagePath();
 		}
 	}
 
@@ -191,13 +190,9 @@ public class Panel extends JPanel implements ActionListener {
 						JOptionPane.ERROR_MESSAGE);
 			}
 			enablePlaying(false); // When the client is not connected to a server, disable all input
-		}
-//		else if (e.getSource() == newGame) // Client wants to start a new game
-//			connectionHandler.sendMessage(new Message(Message.NEW_GAME));
-		else if (e.getSource() == guess) // Client takes a guess
+		} else if (e.getSource() == guess) // Client takes a guess
 		{
 			if (!input.getText().isEmpty()) {
-				System.out.println("a");
 				connectionHandler.sendMessage(new Message(0, input.getText()));
 			} else
 				JOptionPane.showMessageDialog(this, "Please enter at least one letter!", "Invalid Input",
@@ -205,18 +200,19 @@ public class Panel extends JPanel implements ActionListener {
 		}
 	}
 
-	// Enables/Disables input
+	/**
+	 * Enables/Disables input
+	 */
 	public void enablePlaying(boolean enable) {
+
 		ip.setEnabled(!enable);
 		port.setEnabled(!enable);
 		connect.setVisible(!enable);
 		connect.setEnabled(!enable);
 		disconnect.setVisible(enable);
 		disconnect.setEnabled(enable);
-		// newGame.setEnabled(enable);
 		guess.setEnabled(enable);
 		input.setEnabled(enable);
 	}
-
 
 }
