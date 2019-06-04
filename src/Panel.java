@@ -42,7 +42,7 @@ public class Panel extends JPanel implements ActionListener {
 	public JLabel player = new JLabel();
 	private ImageLabel imageLabel;
 	private JPanel rightContent = new JPanel();
-	private JLabel invalidLetters = new JLabel("Lettres proposées: ");
+	private JLabel invalidLetters = new JLabel("Invalid letters: ");
 	private ArrayList<String> letters = new ArrayList<String>();
 
 	private int evolution_pendu = 0;
@@ -165,9 +165,9 @@ public class Panel extends JPanel implements ActionListener {
 		if (msg.letters.size() != 0)
 			letters = msg.letters;
 		else
-			invalidLetters.setText("Lettres proposées: " + letters.toString());
+			invalidLetters.setText("Invalid letters: " + letters.toString());
 		allowedAttempts.setText("Attempts left: " + msg.allowedAttempts);
-		invalidLetters.setText("Lettres proposées: " + letters.toString());
+		invalidLetters.setText("Invalid letters: " + letters.toString());
 		guessedLetters.setText("<html><font size = 5>" + msg.guessedLetters + "</font></html>");
 		if (msg.flag == Message.NEW_GAME) {
 			this.player.setText(msg.name);

@@ -71,8 +71,10 @@ public class ConnectionHandler implements Runnable {
 						if (message.flag == Message.WRONG_GUESS && message.word.length() == 1) {
 							panel.addInvalidLetter(message.word);
 						}
-
-						System.out.println("msg : " + message.letters.toString());
+						if (message.flag == Message.WRONG_GUESS && message.allowedAttempts == 1) {
+							JOptionPane.showMessageDialog(panel, "There is only one attempt left !", "Last attempt",
+									JOptionPane.INFORMATION_MESSAGE);
+						}
 						panel.updateInfo(message);
 					}
 

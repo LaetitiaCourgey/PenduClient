@@ -73,7 +73,6 @@ public class Message implements Serializable {
 		guessedLetters = g;
 		this.name = name;
 		this.letters = letters;
-		System.out.println("ffhf" + letters.toString());
 	}
 
 }
