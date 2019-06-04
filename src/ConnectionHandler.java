@@ -52,6 +52,7 @@ public class ConnectionHandler implements Runnable {
 		{
 			try {
 				Message message = (Message) in.readObject();
+
 				if (message != null) // The server sent a message
 				{
 					if (message.flag == Message.WIN) // The client won
@@ -66,8 +67,15 @@ public class ConnectionHandler implements Runnable {
 					}
 					// The client guessed right/wrong or requested to start a new game
 					else if (message.flag == Message.RIGHT_GUESS || message.flag == Message.WRONG_GUESS
-							|| message.flag == Message.NEW_GAME)
+							|| message.flag == Message.NEW_GAME) {
+						if (message.flag == Message.WRONG_GUESS && message.word.length() == 1) {
+							panel.addInvalidLetter(message.word);
+						}
+
+						System.out.println("msg : " + message.letters.toString());
 						panel.updateInfo(message);
+					}
+
 					if (message.flag == Message.WRONG_GUESS) {
 						panel.changeImage(message);
 					} else if (message.flag == Message.CLOSE_CONNECTION) // The server has terminated the connection

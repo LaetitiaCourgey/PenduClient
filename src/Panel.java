@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -41,6 +42,8 @@ public class Panel extends JPanel implements ActionListener {
 	public JLabel player = new JLabel();
 	private ImageLabel imageLabel;
 	private JPanel rightContent = new JPanel();
+	private JLabel invalidLetters = new JLabel("Lettres proposées: ");
+	private ArrayList<String> letters = new ArrayList<String>();
 
 	private int evolution_pendu = 0;
 
@@ -64,6 +67,12 @@ public class Panel extends JPanel implements ActionListener {
 		p.add(player);
 		p.add(allowedAttempts);
 		p.add(score);
+		p.setPreferredSize(new Dimension(400, 50));
+		leftContent.add(p, BorderLayout.CENTER);
+
+		p = new JPanel();
+		invalidLetters.setPreferredSize(new Dimension(200, 40));
+		p.add(invalidLetters);
 		p.setPreferredSize(new Dimension(400, 50));
 		leftContent.add(p, BorderLayout.CENTER);
 
@@ -133,6 +142,7 @@ public class Panel extends JPanel implements ActionListener {
 
 		score.setText("Score: " + msg.score);
 		allowedAttempts.setText("Attempts left: 0");
+		letters = new ArrayList<String>();
 		if (win) {
 			guessedLetters.setText("<html><font size = 5>" + msg.word + "</font></html>");
 			JOptionPane.showMessageDialog(this,
@@ -142,10 +152,22 @@ public class Panel extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(this, "Game Over! " + msg.name + " has lost! \nScores: \n" + msg.resultats);
 		}
 		input.setText("");
+		invalidLetters.setText("Lettres proposées: ");
+	}
+
+	public ArrayList<String> addInvalidLetter(String l) {
+		if (!letters.contains(l))
+			letters.add(l);
+		return letters;
 	}
 
 	public void updateInfo(Message msg) {
+		if (msg.letters.size() != 0)
+			letters = msg.letters;
+		else
+			invalidLetters.setText("Lettres proposées: " + letters.toString());
 		allowedAttempts.setText("Attempts left: " + msg.allowedAttempts);
+		invalidLetters.setText("Lettres proposées: " + letters.toString());
 		guessedLetters.setText("<html><font size = 5>" + msg.guessedLetters + "</font></html>");
 		if (msg.flag == Message.NEW_GAME) {
 			this.player.setText(msg.name);
