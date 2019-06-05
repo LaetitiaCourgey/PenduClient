@@ -19,11 +19,13 @@ public class ConnectionHandler implements Runnable {
 	Socket socket;
 	ObjectInputStream in;
 	ObjectOutputStream out;
+	String name;
 
-	ConnectionHandler(String ip, int port, Panel p) {
+	ConnectionHandler(String ip, int port, Panel p, String s) {
 		this.ip = ip;
 		this.port = port;
 		panel = p;
+		name = s;
 	}
 
 	/**
@@ -46,7 +48,7 @@ public class ConnectionHandler implements Runnable {
 			return;
 		// Notify the server that the
 		// client wants to start a new game
-		sendMessage(new Message(Message.NEW_GAME));
+		sendMessage(new Message(Message.NEW_GAME, 0, 0, "", "", name));
 
 		while (!socket.isClosed()) // Run while a connection is maintained
 		{
@@ -57,13 +59,14 @@ public class ConnectionHandler implements Runnable {
 				{
 					if (message.flag == Message.WIN) // The client won
 					{
+						panel.changeImage(message);
 						panel.winOrLose(true, message);
-						sendMessage(new Message(Message.NEW_GAME)); // Start a new game
+						sendMessage(new Message(Message.NEW_GAME, 0, 0, "", "", name)); // Start a new game
 					} else if (message.flag == Message.LOSE) // The client lost
 					{
 						panel.changeImage(message);
 						panel.winOrLose(false, message);
-						sendMessage(new Message(Message.NEW_GAME)); // Start a new game
+						sendMessage(new Message(Message.NEW_GAME, 0, 0, "", "", name)); // Start a new game
 					}
 					// The client guessed right/wrong or requested to start a new game
 					else if (message.flag == Message.RIGHT_GUESS || message.flag == Message.WRONG_GUESS

@@ -24,7 +24,7 @@ public class Main extends JFrame {
 		this.add(panel);
 		this.setTitle("Client ");
 		this.setVisible(true);
-		this.setResizable(false);
+		this.setResizable(true);
 		// this.setLocationRelativeTo(null);
 		this.setSize(new Dimension(900, 600));
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

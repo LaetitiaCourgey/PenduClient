@@ -170,7 +170,6 @@ public class Panel extends JPanel implements ActionListener {
 		invalidLetters.setText("Invalid letters: " + letters.toString());
 		guessedLetters.setText("<html><font size = 5>" + msg.guessedLetters + "</font></html>");
 		if (msg.flag == Message.NEW_GAME) {
-			this.player.setText(msg.name);
 			if (msg.allowedAttempts != 8) {
 				this.imageLabel.setImagePath("images/pendu" + (7 - msg.allowedAttempts) + ".jpg");
 				evolution_pendu = 8 - msg.allowedAttempts;
@@ -183,7 +182,7 @@ public class Panel extends JPanel implements ActionListener {
 	public void changeImage(Message msg) {
 		this.imageLabel.setImagePath("images/pendu" + evolution_pendu + ".jpg");
 		evolution_pendu++;
-		if (evolution_pendu == 8) {
+		if (msg.flag == Message.WIN || msg.flag == Message.LOSE) {
 			evolution_pendu = 0;
 		}
 	}
@@ -201,7 +200,9 @@ public class Panel extends JPanel implements ActionListener {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			connectionHandler = new ConnectionHandler(ip.getText(), p, this); // Initialize the handler
+			String s = JOptionPane.showInputDialog(this, "Choisissez votre pseudo");
+			this.player.setText(s);
+			connectionHandler = new ConnectionHandler(ip.getText(), p, this, s); // Initialize the handler
 			new Thread(connectionHandler).start(); // Run the handler in a new thread
 		} else if (e.getSource() == disconnect) // Client wants to disconnect from the server
 		{

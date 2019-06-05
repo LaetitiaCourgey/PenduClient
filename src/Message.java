@@ -27,7 +27,7 @@ public class Message implements Serializable {
 	public String clientGuess;
 	public String name;
 	public String resultats;
-	public ArrayList<String> letters;
+	public ArrayList<String> letters = new ArrayList<String>();
 
 	Message(int f) {
 		flag = f;
