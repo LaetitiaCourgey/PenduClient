@@ -222,10 +222,10 @@ public class Panel extends JPanel implements ActionListener {
 			enablePlaying(false); // When the client is not connected to a server, disable all input
 		} else if (e.getSource() == guess) // Client takes a guess
 		{
-			if (!input.getText().isEmpty()) {
+			if (!input.getText().isEmpty() && input.getText().matches("[a-zA-Z]+")) {
 				connectionHandler.sendMessage(new Message(0, input.getText()));
 			} else
-				JOptionPane.showMessageDialog(this, "Please enter at least one letter!", "Invalid Input",
+				JOptionPane.showMessageDialog(this, "Please enter letters!", "Invalid Input",
 						JOptionPane.ERROR_MESSAGE);
 		}
 	}
