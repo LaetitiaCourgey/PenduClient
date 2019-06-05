@@ -93,7 +93,7 @@ public class Panel extends JPanel implements ActionListener {
 		p = new JPanel();
 		p.add(new JLabel("<html><font color = white size = 5>Connected to:</font></html>"));
 		p.setBackground(Color.darkGray);
-		p.setPreferredSize(new Dimension(400, 100));
+		// p.setPreferredSize(new Dimension(400, 100));
 		leftContent.add(p, BorderLayout.CENTER);
 		leftContent.setBackground(Color.darkGray);
 
@@ -145,11 +145,12 @@ public class Panel extends JPanel implements ActionListener {
 		letters = new ArrayList<String>();
 		if (win) {
 			guessedLetters.setText("<html><font size = 5>" + msg.word + "</font></html>");
-			JOptionPane.showMessageDialog(this,
-					"Congratulations! " + msg.name + " has won! \nScores: \n" + msg.resultats);
+			JOptionPane.showMessageDialog(this, "The word was " + msg.word + ", congratulations! " + msg.name
+					+ " has won! \nScores: \n" + msg.resultats);
 		} else {
 			guessedLetters.setText("");
-			JOptionPane.showMessageDialog(this, "Game Over! " + msg.name + " has lost! \nScores: \n" + msg.resultats);
+			JOptionPane.showMessageDialog(this, "Game Over, the word was " + msg.word + ". " + msg.name
+					+ " has lost! \nScores: \n" + msg.resultats);
 		}
 		input.setText("");
 		invalidLetters.setText("Lettres proposées: ");
@@ -171,15 +172,21 @@ public class Panel extends JPanel implements ActionListener {
 		guessedLetters.setText("<html><font size = 5>" + msg.guessedLetters + "</font></html>");
 		if (msg.flag == Message.NEW_GAME) {
 			if (msg.allowedAttempts != 8) {
+				this.imageLabel.setPreferredSize(new Dimension(500, 400));
+				this.imageLabel.setVerticalAlignment(JLabel.CENTER);
 				this.imageLabel.setImagePath("images/pendu" + (7 - msg.allowedAttempts) + ".jpg");
 				evolution_pendu = 8 - msg.allowedAttempts;
 			} else {
+				this.imageLabel.setPreferredSize(new Dimension(500, 400));
+				this.imageLabel.setVerticalAlignment(JLabel.CENTER);
 				this.imageLabel.setImagePath("images/accueil.jpg");
 			}
 		}
 	}
 
 	public void changeImage(Message msg) {
+		this.imageLabel.setPreferredSize(new Dimension(500, 400));
+		this.imageLabel.setVerticalAlignment(JLabel.CENTER);
 		this.imageLabel.setImagePath("images/pendu" + evolution_pendu + ".jpg");
 		evolution_pendu++;
 		if (msg.flag == Message.WIN || msg.flag == Message.LOSE) {

@@ -26,7 +26,7 @@ public class ImageLabel extends JLabel {
 	}
 
 	public void paint(Graphics g) {
-		g.setColor(Color.red);
+		g.setColor(Color.darkGray);
 		g.drawRect(0, 0, this.getWidth(), this.getHeight());
 		try {
 			Image img = ImageIO.read(new File(this.imagePath));
