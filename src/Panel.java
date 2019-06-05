@@ -145,11 +145,13 @@ public class Panel extends JPanel implements ActionListener {
 		letters = new ArrayList<String>();
 		if (win) {
 			guessedLetters.setText("<html><font size = 5>" + msg.word + "</font></html>");
-			JOptionPane.showMessageDialog(this, "The word was " + msg.word + ", congratulations! " + msg.name
+			JOptionPane.showMessageDialog(this,
+					"The word was " + msg.word.toUpperCase() + ", congratulations! " + msg.name.toUpperCase()
 					+ " has won! \nScores: \n" + msg.resultats);
 		} else {
 			guessedLetters.setText("");
-			JOptionPane.showMessageDialog(this, "Game Over, the word was " + msg.word + ". " + msg.name
+			JOptionPane.showMessageDialog(this, "Game Over, the word was " + msg.word.toUpperCase() + ". "
+					+ msg.name.toUpperCase()
 					+ " has lost! \nScores: \n" + msg.resultats);
 		}
 		input.setText("");
@@ -207,7 +209,7 @@ public class Panel extends JPanel implements ActionListener {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			String s = JOptionPane.showInputDialog(this, "Choisissez votre pseudo");
+			String s = JOptionPane.showInputDialog(this, "Choose you nickname");
 			this.player.setText(s);
 			connectionHandler = new ConnectionHandler(ip.getText(), p, this, s); // Initialize the handler
 			new Thread(connectionHandler).start(); // Run the handler in a new thread
